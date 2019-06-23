@@ -1,20 +1,84 @@
-// variables de estudiantes
-var estudianteAgregado = {}, estudiantes = []; 
-// registrar estudiantes
+var mayorNota = document.getElementById("mayor-nota").addEventListener("click",function(){
+    calcularMayorNota(curso)
+});
+
+var menorNota = document.getElementById("menor-nota").addEventListener("click",function(){
+    calcularMenorNota(curso)
+});
+
+var promedio = document.getElementById("promedio").addEventListener("click",function(){
+    calcularPromedio(curso)
+});
+
+var curso = {
+    "estudiantes": []
+    }
+
 function registrarEstudiante(){
     var codigo = document.getElementById("codigo-input").value;
     var nombre = document.getElementById("nombre-input").value;
     var nota = document.getElementById("nota-input").value;
-
-//agregando al objeto
-    estudianteAgregado.codigo = codigo;
-    estudianteAgregado.nombre = nombre;
-    estudianteAgregado.nota = parseInt(nota);
-    estudiantes.push ({estudiante: estudianteAgregado})
-    agregarTabla(codigo, nombre, nota);
+    if(codigo == "" || nombre == "" || nota == ""){
+        alert("Por favor ingrese los datos")
+    }else if (isNaN(nota)) {
+        alert ("El Formato de la nota NO fue ingresado correctamente");
+    }else{
+        var estudiante = "{\"codigo\" : \"" + codigo + "\", \"nombre\" : \"" + nombre + "\",\"nota\" :  " + nota + "}";
+        var estudianteNuevo = curso.estudiantes.push(JSON.parse(estudiante));
+        alert("El estudiante "+ nombre + " fue agregado")
+        agregarTabla(codigo, nombre, nota);
+    }  
 }
 
-// agregando a la tabla
+function calcularMayorNota(curso){
+    title = "Nota más alta";
+    var dato = "";
+    var i;
+    notas = []
+    for(i=0;i<curso.estudiantes.length;i++){
+     notas.push(curso.estudiantes[i].nota)
+    }
+
+    var maximo = Math.max.apply(null , notas);
+    
+    for(i=0;i<curso.estudiantes.length;i++){
+        if(curso.estudiantes[i].nota === maximo){
+            dato = "El estudiante de menor nota es: "+ curso.estudiantes[i].nombre +", con un: "+curso.estudiantes[i].nota;
+            alert(dato)
+        }
+    }         
+}
+
+function calcularMenorNota(curso){
+    title = "Nota más baja";
+    var dato;
+    var i;
+    notas = []
+    for(i=0;i<curso.estudiantes.length;i++){
+     notas.push(curso.estudiantes[i].nota)
+    }
+    var minimo = Math.min.apply(null , notas);            
+    for(i=0;i<curso.estudiantes.length;i++){
+        if(curso.estudiantes[i].nota === minimo){
+            dato = "El estudiante de menor nota es: "+ curso.estudiantes[i].nombre +", con un: "+curso.estudiantes[i].nota;
+            alert(dato)
+        }
+    }        
+}
+
+function calcularPromedio(json){ 
+    title = "Promedio"
+    var dato = "";
+    var i;
+    var promedio = 0.0;
+    for(i=0;i<json.estudiantes.length;i++){
+       promedio += json.estudiantes[i].nota
+    }
+    dato = promedio/json.estudiantes.length;
+
+    alert("La nota total promedio es: "+dato)
+}
+
 function agregarTabla (codigo, nombre, nota){
     var tabla = document.getElementById("tabla");
     var tr = document.createElement("tr");
@@ -35,74 +99,4 @@ function agregarTabla (codigo, nombre, nota){
     }
 }
 
-/// aniadido **************************
 
-function calcularPromedio(json){
-    console.log(json);
-    title = "Promedio"
-    var dato = "";
-    var i;
-    var promedio = 0.0;
-    for(i=0;i<json.length;i++){
-       promedio += json[i].estudianteAgregado.nota
-       console.log(promedio)
-    }
-    dato = promedio/json.length;
-    console.log(dato)       
-}
-function mostrarPromedio(){
-    calcularPromedio(estudiantes);
-}
-/*
-function calcularMayorNota(json){
-    title = "Nota más alta";
-    var dato = "";
-    var i;
-    notas = []
-    for(i=0;i<json.length;i++){
-     notas.push(json[i].nota)
-    }
-    var maximo = Math.max.apply(null , notas);
-    for(i=0;i<json.length;i++){
-        if(json[i].nota === maximo){
-            dato += "<tr><td>"+json[i].codigo+"</td><td>"+json[i].nombre+"</td><td>"+json[i].nota+"</td></tr>";
-        }
-        tabular(title,dato)
-    }                
-}
-function calcularMenorNota(json){
-    title = "Nota más baja";
-    var dato = "";
-    var i;
-    notas = []
-    for(i=0;i<json.length;i++){
-     notas.push(json[i].nota)
-    }
-    var minimo = Math.min.apply(null , notas);            
-    for(i=0;i<json.length;i++){
-        if(json[i].nota === minimo){
-            dato += "<tr><td>"+json[i].codigo+"</td><td>"+json[i].nombre+"</td><td>"+json[i].nota+"</td></tr>";
-        }
-        tabular(title, dato)
-    }        
-}
-function tabular(title,info) {
-    if(title ==="Promedio"){
-        var plantilla = "<table><caption><h3>"+title+"</h3></caption><tr><th>Nota Promedio</th></tr><tr><td>"+info+"</td></tr></table>"
-    }else{
-        var plantilla = "<table><caption><h3>"+title+"</h3></caption><tr><th>Código</th><th>Nombre</th><th>Nota</th></tr>"+info+"</table>"
-    }
-    document.getElementById("tabla").innerHTML = plantilla
-}
-function colocarDatos(){
-     leerDatos(estudiantes);
-}
-function mostrarPromedio(){
-    calcularPromedio(estudiantes);
-}
-function mostrarMayorNota(){
-    calcularMayorNota(estudiantes)
-}
-function mostrarMenorNota(){
-    calcularMenorNota(estudiantes)
-}*/

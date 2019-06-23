@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <label for="cxt1">Nombre:</label><br>
+    <input type="text" id="cxt1"><br>
+    <label for="cxt2">Edad:</label><br>
+    <input type="text" id="cxt2"><br>
+    <label for="cxt3">Estatura:</label><br>
+    <input type="text" id="cxt3"><br>
+    <label for="cxt4">Peso: </label><br>
+    <input type="text" id="cxt4"><br>
+    <div id="mensaje">
+
+    </div>
+    <br>
+    <br>
+    <input type="button" value="Registrar Persona" id="button1">
+    <input type="button" value="Mostrar Persona" id="button2">
+    <input type="button" value="Calcular IMC" id="button3">
+    <br>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var persona = {
+                nombre : null,
+                edad : null,
+                estatura : null,
+                peso : null,
+            
+                init : function (propiedades){
+                    persona.propiedades = propiedades;
+                },
+                leerPropiedades : function(){
+                    return persona.propiedades;
+                }  
+            };
+            $("#button1").click(function(){
+                var nombre = $("#cxt1").val();
+                var estatura = $("#cxt2").val();
+                var edad = $("#cxt3").val();
+                var peso = $("#cxt4").val();
+                var propiedades = {
+                    nombre : nombre,
+                    edad : edad,
+                    estatura : estatura,
+                    peso : peso,
+                }
+                persona.init(propiedades);
+                alert("Persona Registrada")
+                limpiarCampos();
+
+            });
+            $("#button2").click(function(){
+                var propiedades = persona.leerPropiedades();
+                var mensaje = "<h1>Persona</h1>";
+                mensaje += "<p>"+propiedades.nombre+"</p>"
+                $("#mensaje").html(mensaje)
+            });
+            $("#button3").click(function(){
+                var peso = persona.leerPropiedades();
+                var calcularPeso = peso.peso*2;
+
+                alert(calcularPeso)
+
+            });
+
+
+            function limpiarCampos (){
+                $("#cxt1").val("");
+                $("#cxt2").val("");
+                $("#cxt3").val("");
+                $("#cxt4").val("");
+            }
+
+        }); // Aqui termina el jQuery
+        
+    </script>
+</body>
+</html>
